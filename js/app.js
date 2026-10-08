@@ -103,15 +103,19 @@ const Game = {
     // },
     setEventListeners()
     {
-        // Tastatură
+
+        // =========================
+        // KEYBOARD
+        // =========================
+
         document.onkeydown = event =>
         {
             switch (event.code)
             {
-                case this.keys.jump: {
+
+                case this.keys.jump:
                     this.player.jump()
                     this.jumpAudio.play()
-                }
                     break
 
                 case this.keys.moveLeft:
@@ -122,67 +126,117 @@ const Game = {
                     this.player.moveRight()
                     break
 
-                case this.keys.shot: {
+                case this.keys.shot:
                     this.player.shoot()
                     this.player.bulletSound.play()
-                }
                     break
             }
         }
 
-        // Touch
-        let touchStartX = 0
-        let touchStartY = 0
 
-        document.addEventListener('touchstart', event =>
+        // =========================
+        // MOBILE CONTROL
+        // =========================
+
+        const leftButton = document.querySelector('#mobile-left')
+        const rightButton = document.querySelector('#mobile-right')
+        const jumpButton = document.querySelector('#mobile-jump')
+        const shootButton = document.querySelector('#mobile-shoot')
+
+
+        // Starea butoanelor de mișcare
+        let movingLeft = false
+        let movingRight = false
+
+
+        // -------------------------
+        // LEFT
+        // -------------------------
+
+        leftButton.addEventListener('touchstart', event =>
         {
-            const touch = event.touches[0]
-
-            touchStartX = touch.clientX
-            touchStartY = touch.clientY
-        }, { passive: false })
-
-        document.addEventListener('touchend', event =>
-        {
-            const touch = event.changedTouches[0]
-
-            const deltaX = touch.clientX - touchStartX
-            const deltaY = touch.clientY - touchStartY
-
-            const minSwipe = 30
-
-            // Swipe orizontal
-            if (Math.abs(deltaX) > Math.abs(deltaY))
-            {
-
-                if (deltaX > minSwipe)
-                {
-                    this.player.moveRight()
-                }
-
-                if (deltaX < -minSwipe)
-                {
-                    this.player.moveLeft()
-                }
-
-                // Swipe vertical
-            } else if (deltaY < -minSwipe)
-            {
-                this.player.jump()
-
-                this.jumpAudio.play()
-            }
-
-            // Tap = shoot
-            else if (Math.abs(deltaX) < minSwipe && Math.abs(deltaY) < minSwipe)
-            {
-                this.player.shoot()
-
-                this.player.bulletSound.play()
-            }
-
             event.preventDefault()
+            movingLeft = true
         }, { passive: false })
+
+        leftButton.addEventListener('touchend', event =>
+        {
+            event.preventDefault()
+            movingLeft = false
+        }, { passive: false })
+
+        leftButton.addEventListener('touchcancel', event =>
+        {
+            movingLeft = false
+        })
+
+
+        // -------------------------
+        // RIGHT
+        // -------------------------
+
+        rightButton.addEventListener('touchstart', event =>
+        {
+            event.preventDefault()
+            movingRight = true
+        }, { passive: false })
+
+        rightButton.addEventListener('touchend', event =>
+        {
+            event.preventDefault()
+            movingRight = false
+        }, { passive: false })
+
+        rightButton.addEventListener('touchcancel', event =>
+        {
+            movingRight = false
+        })
+
+
+        // -------------------------
+        // JUMP
+        // -------------------------
+
+        jumpButton.addEventListener('touchstart', event =>
+        {
+            event.preventDefault()
+
+            this.player.jump()
+            this.jumpAudio.play()
+        }, { passive: false })
+
+
+        // -------------------------
+        // SHOOT
+        // -------------------------
+
+        shootButton.addEventListener('touchstart', event =>
+        {
+            event.preventDefault()
+
+            this.player.shoot()
+            this.player.bulletSound.play()
+        }, { passive: false })
+
+
+        // =========================
+        // GAME LOOP PENTRU MIȘCARE
+        // =========================
+
+        setInterval(() =>
+        {
+
+            if (movingLeft)
+            {
+                this.player.moveLeft()
+            }
+
+            if (movingRight)
+            {
+                this.player.moveRight()
+            }
+
+        }, 1000 / this.FPS)
     },
 
     start() {
