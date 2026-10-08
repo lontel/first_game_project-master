@@ -81,26 +81,6 @@ const Game = {
         this.powerUpArr.forEach(powerUp => powerUp.draw())
     },
 
-    // setEventListeners() {
-    //     document.onkeydown = event => {
-    //         switch (event.code) {
-    //             case this.keys.jump: {
-    //                 this.player.jump()
-    //                 this.jumpAudio.play()
-    //             }
-    //                 break;
-    //             case this.keys.moveLeft: this.player.moveLeft()
-    //                 break;
-    //             case this.keys.moveRight: this.player.moveRight()
-    //                 break;
-    //             case this.keys.shot: {
-    //                 this.player.shoot()
-    //                 this.player.bulletSound.play()
-    //             }
-    //                 break;
-    //         }
-    //     }
-    // },
     setEventListeners()
     {
 
