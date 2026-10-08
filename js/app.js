@@ -200,7 +200,7 @@ const Game = {
 
 
         // =========================
-        // GAME LOOP PENTRU MIȘCARE
+        // GAME LOOP FOR MOVEMENT
         // =========================
 
         setInterval(() =>
